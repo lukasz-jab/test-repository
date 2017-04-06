@@ -43,7 +43,6 @@ public class Zadanie17 {
     @Before
     public void before() {
         driver = new ChromeDriver();
-        driver.manage().logs().get("browser").forEach(l -> System.out.println(l));
         driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
     }
 
@@ -65,6 +64,7 @@ public class Zadanie17 {
         }
         for (int j = 0; j < hrefOfProduct.length; j++) {
             driver.navigate().to(hrefOfProduct[j]);
+            driver.manage().logs().get("browser").forEach(l -> System.out.println(l));
         }
 
     }
