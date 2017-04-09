@@ -30,45 +30,89 @@ public class Zadanie13 {
         chDriver = new ChromeDriver();
         chDriver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         wait = new WebDriverWait(chDriver,5);
+
+        chDriver.navigate().to("http://localhost/litecart");
     }
     @Test
     public void test(){
-        chDriver.navigate().to("http://localhost/litecart");
 
-        chDriver.findElement(By.cssSelector("#box-latest-products li:nth-child(1) img[class=image]")).click();
-        element= chDriver.findElement(By.cssSelector("span.quantity")).getAttribute("textContent");
-        chDriver.findElement(By.cssSelector("button[name=add_cart_product]")).click();
+
+        chooseFirstProduct();
+        getCurrentCartStatus();
+        addToCart();
+        waitForChangeCartStatus();
+        gotoMainPage();
+
+        chooseSecondProduct();
+        getCurrentCartStatus();
+        addToCart();
+        waitForChangeCartStatus();
+        gotoMainPage();
+
+        chooseThirdProduct();
+        getCurrentCartStatus();
+        addToCart();
+        waitForChangeCartStatus();
+        gotoMainPage();
+
+        checkToRemoveProduct();
+        getTableOfProduct();
+        deleteFromCart();
+        waitForChangeOfTableProduct();
+
+        getTableOfProduct();
+        deleteFromCart();
+        waitForChangeOfTableProduct();
+
+        getTableOfProduct();
+        deleteFromCart();
+        waitForChangeOfTableProduct();
+
+
+    }
+
+    private void waitForChangeOfTableProduct() {
+        wait.until(stalenessOf(table));
+    }
+
+    private void getTableOfProduct() {
+        table = chDriver.findElement(By.cssSelector("#order_confirmation-wrapper"));
+    }
+
+    private void waitForChangeCartStatus() {
         wait.until(ExpectedConditions.invisibilityOfElementWithText((By.cssSelector("span.quantity")),element));
-       //waiting for refresh the number of items in upper right side
-        chDriver.findElement(By.cssSelector("#logotype-wrapper a")).click();
+    }
 
-        chDriver.findElement(By.cssSelector("#box-latest-products li:nth-child(2) img[class=image]")).click();
+    private void getCurrentCartStatus() {
         element= chDriver.findElement(By.cssSelector("span.quantity")).getAttribute("textContent");
-        chDriver.findElement(By.cssSelector("button[name=add_cart_product]")).click();
-        wait.until(ExpectedConditions.invisibilityOfElementWithText((By.cssSelector("span.quantity")),element));
-        chDriver.findElement(By.cssSelector("#logotype-wrapper a")).click();
+    }
 
-        chDriver.findElement(By.cssSelector("#box-latest-products li:nth-child(3) img[class=image]")).click();
-        element= chDriver.findElement(By.cssSelector("span.quantity")).getAttribute("textContent");
-        chDriver.findElement(By.cssSelector("button[name=add_cart_product]")).click();
-        wait.until(ExpectedConditions.invisibilityOfElementWithText((By.cssSelector("span.quantity")),element));
-        chDriver.findElement(By.cssSelector("#logotype-wrapper a")).click();
+    private void deleteFromCart() {
+        chDriver.findElement(By.cssSelector("button[name=remove_cart_item]")).click();
+    }
 
+    private void checkToRemoveProduct() {
         chDriver.findElement(By.cssSelector("div#cart a.content")).click();
+    }
 
-        table = chDriver.findElement(By.cssSelector("#order_confirmation-wrapper"));
-        chDriver.findElement(By.cssSelector("button[name=remove_cart_item]")).click();
-        wait.until(stalenessOf(table));
-        //waiting to refresh the table with items on the lower side
+    private void chooseThirdProduct() {
+        chDriver.findElement(By.cssSelector("#box-latest-products li:nth-child(4) img[class=image]")).click();
+    }
 
-        table = chDriver.findElement(By.cssSelector("#order_confirmation-wrapper"));
-        chDriver.findElement(By.cssSelector("button[name=remove_cart_item]")).click();
-        wait.until(stalenessOf(table));
+    private void chooseSecondProduct() {
+        chDriver.findElement(By.cssSelector("#box-latest-products li:nth-child(3) img[class=image]")).click();
+    }
 
-        table = chDriver.findElement(By.cssSelector("#order_confirmation-wrapper"));
-        chDriver.findElement(By.cssSelector("button[name=remove_cart_item]")).click();
-        wait.until(stalenessOf(table));
+    private void gotoMainPage() {
+        chDriver.findElement(By.cssSelector("#logotype-wrapper a")).click();
+    }
 
+    private void addToCart() {
+        chDriver.findElement(By.cssSelector("button[name=add_cart_product]")).click();
+    }
+
+    private void chooseFirstProduct() {
+        chDriver.findElement(By.cssSelector("#box-latest-products li:nth-child(2) img[class=image]")).click();
     }
 
     @After
